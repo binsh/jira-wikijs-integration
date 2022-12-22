@@ -1,0 +1,50 @@
+$webResourceManager.requireResourcesForContext("com.kolhozcustoms.WikiJS:WikiJS-resources")
+<html>
+    <head>
+    <title>$i18n.getText("wiki-js.title")</title>
+    <meta name="decorator" content="atl.general"/>
+    </head>
+    <body class="ka ajax-issue-search-and-view page-type-navigator" style="overflow-y: auto;">
+    <div class="navigator-container" style="overflow-y: hidden;">
+        <div class="navigator-sidebar ui-sidebar-scrollable" id="navigator-sidebar" style="width: 266px;">
+            <div class="ui-sidebar-content">
+                <div class="filters-content">
+                    <h2 class="filter-title" style="margin:0 0 16px 0;">$i18n.getText("wiki-js.title")</h2>
+                </div>
+            </div>
+            <div class="ui-sidebar ui-draggable ui-draggable-handle" style="position: absolute; left: 266px; top: 0px;">
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            (function() {
+                var navigatorSidebarElement = jQuery(".navigator-sidebar");
+                if (JIRA.Issues.FilterPanelModel) {
+                    navigatorSidebarElement.toggleClass("collapsed", !JIRA.Issues.FilterPanelModel.prototype.isExpanded())
+                    if (JIRA.Issues.FilterPanelModel.prototype.isExpanded()) {
+                        navigatorSidebarElement.css({ width: JIRA.Issues.FilterPanelModel.prototype.getWidth() });
+                    }
+                }
+            })();
+        </script>
+
+        <main id="main" class="navigator-body" role="main">
+            <div class="contained-content">
+                <header class="aui-page-header" style="margin:16px;">
+                    <div class="aui-page-header-inner">
+                        <div class="aui-page-header-main">
+                            <ol class="aui-nav aui-nav-breadcrumbs">
+                                <li><a href="https://example.com/"><span class="aui-icon aui-icon-small aui-iconfont-home-filled"></span></a></li>
+                            </ol>
+                            <h1 id="page_content_title" style="margin:0 0 16px 0;">$i18n.getText("wiki-js.api-config-error")</h1>
+                            <h3 id="page_content_description">$i18n.getText("wiki-js.api-config-error-description")</h3>
+                        </div>
+                    </div>
+                </header>
+            </div>
+        </main>
+    </div>
+
+    $!{exception} 
+    </body>
+</html>

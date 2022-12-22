@@ -1,0 +1,169 @@
+$webResourceManager.requireResourcesForContext("com.kolhozcustoms.WikiJS:WikiJS-resources")
+<html>
+    <head>
+    <title>$i18n.getText("wiki-js.title")</title>
+    <meta name="decorator" content="atl.general"/>
+    <script type="text/javascript" >
+        var key = "$auth_key";
+        var wiki_server ="$wiki_server";
+        var api_path ="$api_path";
+    </script>
+    </head>
+    <body class="ka ajax-issue-search-and-view page-type-navigator" style="overflow-y: auto;">
+    <div class="navigator-container" style="overflow-y: hidden;">
+        <div class="navigator-sidebar ui-sidebar-scrollable" id="navigator-sidebar" style="width: 266px;">
+            <div class="ui-sidebar-content">
+                <div class="filters-content">
+                    <h2 class="filter-title" style="margin:0 0 16px 0;">$i18n.getText("wiki-js.title")
+                        <a class="aui-button aui-button-subtle ui-undock" href="#" original-title="("wiki-js.undock.description")" resolved="">
+                        <span class="aui-icon aui-icon-small aui-iconfont-chevron-double-left">$i18n.getText("wiki-js.undock.title")</span></a>
+                    </h2>
+                    <div class="filter-list-field-container">
+                        <input autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="true" placeholder="$i18n.getText("wiki-js.search-placeholder")" class="text" id="page-input" aria-controls="page-suggestions" aria-owns="page-suggestions">
+                        <span class="icon-default aui-icon aui-icon-small noloading aui-iconfont-search"></span>
+                    </div>
+
+                    <div class="filter-panel-wrapper" style="max-height: 1148px;">
+                        <div class="filter-panel-system-container">
+                            <div class="aui-navgroup-vertical filter-panel-section">
+                                <div class="aui-nav-heading"><strong class="filter-title">$i18n.getText("wiki-js.articles")</strong></div>
+                                <ul class="aui-nav filter-list" id="menu-tree" resolved="">
+                                    <li><aui-spinner size="small"></aui-spinner>$i18n.getText("wiki-js.loading")...</li>
+                                </ul>
+                            </div>
+                            <div class="aui-navgroup-vertical filter-panel-section hidden">
+                                <div class="aui-nav-heading"><strong class="filter-title">$i18n.getText("wiki-js.searchresult")</strong></div>
+                                <ul class="aui-nav filter-list" id="page-suggestions" resolved="">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-sidebar ui-draggable ui-draggable-handle" style="position: absolute; left: 266px; top: 0px;">
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            (function() {
+                var navigatorSidebarElement = jQuery(".navigator-sidebar");
+                if (JIRA.Issues.FilterPanelModel) {
+                    navigatorSidebarElement.toggleClass("collapsed", !JIRA.Issues.FilterPanelModel.prototype.isExpanded())
+                    if (JIRA.Issues.FilterPanelModel.prototype.isExpanded()) {
+                        navigatorSidebarElement.css({ width: JIRA.Issues.FilterPanelModel.prototype.getWidth() });
+                    }
+                }
+            })();
+        </script>
+
+        <main id="main" class="navigator-body" role="main">
+            <div class="contained-content">
+                <header class="aui-page-header" style="margin:16px;">
+                    <div class="aui-page-header-inner">
+                        <div class="aui-page-header-main">
+                            <ol class="aui-nav aui-nav-breadcrumbs">
+                                <li><a href="https://example.com/"><span class="aui-icon aui-icon-small aui-iconfont-home-filled"></span></a></li>
+                                <li><a href="https://example.com/" class="custom">Sub-page</a></li>
+                                <li class="aui-nav-selected">Direct parent page</li>
+                            </ol>
+                            <h1 id="page_content_title" style="margin:0 0 16px 0;"></h1>
+                            <h3 id="page_content_description"></h3>
+                        </div>
+                        <div class="aui-page-header-actions">
+                            <div class="aui-buttons">
+                                <button id="more_action" class="aui-button aui-button-light aui-dropdown2-trigger aui-dropdown2-trigger-arrowless tooltiped" title="$i18n.getText("wiki-js.menu.action-on-page")" aria-controls="page-action-dropdown" aria-expanded="false"><span class="aui-icon aui-icon-small aui-iconfont-new-edit"></span></button>
+                                <button id="new_document" class="aui-button aui-button-light tooltiped" title="$i18n.getText("wiki-js.menu.new-page")"><span class="aui-icon aui-icon-small aui-iconfont-document-filled"></span></button>
+                                <button id="favorite" class="aui-button aui-button-light tooltiped" resolved="" title="$i18n.getText("wiki-js.menu.favorite")"><span class="aui-icon aui-icon-small aui-iconfont-new-star"></span></button>
+                                <button id="share_it" class="aui-button aui-button-light tooltiped" resolved="" title="$i18n.getText("wiki-js.menu.share")"><span class="aui-icon aui-icon-small aui-iconfont-share"></span></button>
+                                <button id="print_version" class="aui-button aui-button-light tooltiped" resolved="" title="$i18n.getText("wiki-js.menu.print-version")"><span class="aui-icon aui-icon-small aui-iconfont-document"></span></button>
+                                <div id="page-action-dropdown" class="aui-style-default aui-dropdown2 aui-layer" resolved="" tabindex="-1">
+                                    <div class="aui-dropdown2-section">
+                                        <div class="aui-dropdown2-heading">$i18n.getText("wiki-js.menu.current-page")</div>
+                                        <ul>
+                                            <li>
+                                                <a href="#" id="edit_document" class="aui-dropdown2-link" ><span class="aui-icon aui-icon-small aui-iconfont-new-edit"></span> $i18n.getText("wiki-js.menu.edit")</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" id="history_of_changes" class="aui-dropdown2-link" resolved=""><span class="aui-icon aui-icon-small aui-iconfont-recent"></span> $i18n.getText("wiki-js.menu.history-of-changes")</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" id="delete_document"class="aui-dropdown2-link" resolved=""><span class="aui-icon aui-icon-small aui-iconfont-trash"></span> $i18n.getText("wiki-js.menu.delete")</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="navigator-group" style="overflow:auto; margin:0 0 0 16px;">
+                    <div class="aui-navgroup-vertical filter-panel-section">
+                        <div class="aui-nav-heading"><strong class="filter-title">$i18n.getText("wiki-js.toc")</strong></div>
+                        <ul class="aui-nav filter-list" id="toc-tree" resolved=""></ul>
+                    </div>
+                    <div class="contents" id="page_content" style="margin:0 0 24px 0;">
+                        <aui-spinner size="small"></aui-spinner>$i18n.getText("wiki-js.loading")...
+                    </div>
+
+                    <div class="wiki-comment-container wiki-open wiki-everything-else ui-droppable" id="discussion">
+                        <div class="wiki-comment-header js-marker-comment-header">
+                            <div class="wiki-name">
+                                <span class="aui-icon aui-icon-small aui-iconfont-comment icon-comment"></span>
+                                <span>$i18n.getText("wiki-js.comment-form.title")</span>
+                            </div>
+                            <div class="wiki-issue-count">0</div>
+                            <div class="wiki-controls aui-group">
+                                <div class="aui-item"></div>
+                                <div class="aui-item">
+                                    <a class="aui-button js-show-more-config-trigger aui-dropdown2-trigger aui-dropdown2-trigger-arrowless" aria-haspopup="true" data-track-click="gh.sprint.showmore.config.click" role="menu" tabindex="0" resolved="" aria-controls="gh-show-more-config-dropdown" aria-expanded="false" href="#gh-show-more-config-dropdown">
+                                        <span class="aui-icon aui-icon-small aui-iconfont-more"></span>
+                                    </a>
+                                    <div id="gh-show-more-config-dropdown" class="aui-style-default aui-dropdown2 aui-layer" resolved="" tabindex="-1">
+                                        <div class="aui-dropdown2-section">
+                                            <div class="aui-dropdown2-heading"><strong>$i18n.getText("wiki-js.comment-form.menu.show")</strong></div>
+                                            <ul>
+                                                <li>
+                                                    <a href="#" data-issues="100" data-track-click="gh.sprint.showmore.config.click.50" class="aui-dropdown2-radio checked aui-dropdown2-checked" resolved="" aria-checked="true" tabindex="0">$i18n.getText("wiki-js.comment-form.menu.comments"): 50</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-issues="500" data-track-click="gh.sprint.showmore.config.click.100" class="aui-dropdown2-radio" resolved="" aria-checked="false" tabindex="0">$i18n.getText("wiki-js.comment-form.menu.comments"): 100</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-issues="-1" data-track-click="gh.sprint.showmore.config.click.-1" class="aui-dropdown2-radio" resolved="" aria-checked="false" tabindex="0">$i18n.getText("wiki-js.comment-form.menu.all-comments")</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wiki-issues">
+                            <div class="wiki-description">
+                                <textarea class="ic-widget__summary" id="discussion-new" name="discussion-new" rows="10" wrap="virtual" style="overflow-y: auto; height: 200px; width:100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;" placeholder="$i18n.getText("wiki-js.comment-form.textaria-placeholder")" aria-label="$i18n.getText("wiki-js.comment-form.textaria-label")"></textarea>
+                            </div>
+                            <div class="iic-widget__footer" style="height: 40px;">
+                                <div class="" style="display:inline-block;">
+                                    <span class="aui-icon aui-icon-small aui-iconfont-repository-small"></span>
+                                    <div class="caption blue-grey--text">$i18n.getText("wiki-js.comment-form.format") $comment_format</div>
+                                </div>
+                                <div class="" style="display:inline-block; float:right;">
+                                    <span>$i18n.getText("wiki-js.comment-form.published-as") 
+                                        <img height="16" width="16" class="icon rounded" align="absmiddle" style="margin-left: 5px; margin-right: 5px; vertical-align: text-bottom;" src="$currentUser.get(1)"><strong place="name">$currentUser.get(2)</strong>
+                                    </span>
+                                    <input class="aui-button aui-button-primary comment-button" type="submit" value="$i18n.getText("wiki-js.comment-form.submit")" id="comment-save-button" resolved="">
+                                </div>
+                            </div>
+                        </div>
+                        <hr role="separator" aria-orientation="horizontal" class="mt-3 v-divider theme--light">
+                        <div class="">$i18n.getText("wiki-js.comment-form.leave-first-comment").</div>
+                        <div role="dialog" class="v-dialog__container"><!----></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    $!{exception} 
+    </body>
+</html>

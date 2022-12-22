@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2"> 
+  <plugin-info> 
+    <description>${project.description}</description>  
+    <version>${project.version}</version>  
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>  
+    <param name="plugin-icon">images/pluginIcon.png</param>  
+    <param name="plugin-logo">images/pluginLogo.png</param> 
+  </plugin-info>  
+  <!-- i18n resource -->  
+  <resource type="i18n" name="i18n" location="WikiJS"/>  
+  <!-- Web resources -->  
+  <web-resource key="WikiJS-resources" name="WikiJS Web Resources"> 
+    <dependency>com.atlassian.auiplugin:ajs</dependency>  
+    <resource type="download" name="WikiJS.css" location="/css/WikiJS.css"/>
+    <resource type="download" name="WikiJS.js" location="/js/WikiJS.js">
+      <param name="batch" value="false"/>
+    </resource>  
+    <resource type="download" name="images/" location="/images"/>  
+    <context>WikiJS</context> 
+  </web-resource>   
+  
+  <!-- Web items --> 
+  <web-section name="wikijsAdminSection" i18n-name-key="wikijs-admin-section.name" key="wikijs-admin-section" location="admin_plugins_menu" weight="1000"> 
+    <description key="wikijs-admin-section.description">WikiJS Admin Section</description>  
+    <label key="wikijs-admin-section.label"/> 
+  </web-section>
+  <web-item name="wikijsconfig-item" i18n-name-key="wikijsconfig-item.name" key="wikijsconfig-item" section="admin_plugins_menu/wikijs-admin-section" weight="1000"> 
+    <description key="wikijsconfig-item.description">Wiki config Plugin</description>  
+    <label key="wikijsconfig-item.label">Button</label>  
+    <link linkId="wikijs-config-link">/secure/WikiJSConfigAction.jspa</link> 
+  </web-item>  
+    <web-item name="wikijs-item" i18n-name-key="wikijs-item.name" key="wikijs-item" section="system.top.navigation.bar" weight="1000"> 
+    <description key="wikijs-item.description">Wiki Plugin</description>  
+    <label key="wikijs-item.label"/>  
+    <link linkId="wikijs-link">/secure/WikiJSAction.jspa</link> 
+  </web-item>  
+
+  <!-- Web works-->
+  <webwork1 key="wiki-js-config" name="WikiJS config" i18n-name-key="wiki-js-config.name" roles-required="admin"> 
+    <description key="wiki-js-config.description">WikiJS integration configuration manager</description>  
+    <actions> 
+      <action name="com.kolhozcustoms.jira.plugin.wikijs.webwork.WikiJSConfigAction" alias="WikiJSConfigAction"> 
+        <view name="success">/templates/wiki-js-config/success.vm</view>  
+        <view name="input">/templates/wiki-js-config/input.vm</view>  
+        <view name="error">/templates/wiki-js-config/error.vm</view> 
+      </action> 
+    </actions> 
+  </webwork1>  
+  <webwork1 key="wiki-js" name="WikiJS" i18n-name-key="wiki-js.name" roles-required="use"> 
+    <description key="wiki-js.description">The WikiJS Integration Plugin</description>  
+    <actions> 
+      <action name="com.kolhozcustoms.jira.plugin.wikijs.webwork.WikiJSAction" alias="WikiJSAction"> 
+        <view name="success">/templates/wiki-js/success.vm</view>  
+        <view name="input">/templates/wiki-js/input.vm</view>  
+        <view name="error">/templates/wiki-js/error.vm</view> 
+      </action> 
+    </actions> 
+  </webwork1>  
+
+  <!-- REST -->
+  <rest name="WikiJS Plugin API" i18n-name-key="wikijs-plugin-api.name" key="wikijs-plugin-api" path="/wiki-api" version="1.0"> 
+    <description key="wikijs-plugin-api.description"/> 
+  </rest>
+  
+</atlassian-plugin>

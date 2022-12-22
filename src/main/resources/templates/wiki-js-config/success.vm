@@ -1,0 +1,32 @@
+<html>
+<head>
+  <title>$i18n.getText("wiki-js-config.form1.title")</title>
+  <meta name="decorator" content="atl.admin"/>
+</head>
+<body>
+<h1>$i18n.getText("wiki-js-config.form1.title")</h1>
+<form method="POST" class="aui" action="WikiJSConfigAction!save.jspa">
+    <div class="field-group">
+        <label for="wiki-server">$i18n.getText("wiki-js-config.form1.server")
+            <span class="aui-icon icon-required">(required)</span></label>
+        <input class="text medium-field" type="text" id="wiki-server" name="wiki_server" placeholder="https://yourwiki.com" value="$!{wiki_server}">
+        <div class="description">$i18n.getText("wiki-js-config.form1.server-description")</div>
+    </div>
+    <div class="field-group">
+        <label for="api-path">$i18n.getText("wiki-js-config.form1.api")</label>
+        <input class="text medium-field" type="text" id="api-path" name="api_path" placeholder="Enter API path" value="$!{api_path}">
+    </div>
+    <div class="field-group">
+        <label for="auth-key">$i18n.getText("wiki-js-config.form1.auth-key")</label>
+        <input class="text medium-field" type="text" id="auth-key" name="auth_key" placeholder="Enter API key" value="$!{auth_key}">
+        <div class="description">$i18n.getText("wiki-js-config.form1.auth-key-description")</div>
+    </div>
+    <div class="buttons-container">
+        <div class="buttons">
+            <input class="button submit" type="submit" value="$i18n.getText("wiki-js-config.form1.button-save")" id="comment-save-button">
+            <a class="cancel" href="#">$i18n.getText("wiki-js-config.form1.button-cancel")</a>
+        </div>
+    </div>
+</form>
+</body>
+</html>
